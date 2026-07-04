@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaisu script</title>
+    <!-- Подключаем иконки Google Material Symbols -->
+    <link rel="stylesheet" href="https://googleapis.com" />
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Адаптивная шапка сайта -->
+    <header>
+        <div class="header-container">
+            <div class="logo" onclick="showSection('main-page')">
+                <span class="logo-icon">⚡</span> Kaisu script
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="Поиск видео...">
+                <button id="searchBtn"><span class="material-symbols-outlined">search</span></button>
+            </div>
+            
+            <div class="auth-block" id="authBlock">
+                <!-- Сюда JS вставляет кнопку входа или профиль -->
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Кнопка добавления видео для Владельца -->
+        <button id="adminPanelBtn" class="btn-admin-action admin-only hidden" onclick="showSection('admin-page')">
+            <span class="material-symbols-outlined">add_circle</span> Добавить видео
+        </button>
+
+        <!-- ГЛАВНАЯ СТРАНИЦА (СЕТКА ВИДЕО) -->
+        <main id="main-page" class="page">
+            <div class="page-header">
+                <h2 id="pageTitle">Рекомендации</h2>
+            </div>
+            <div class="video-grid" id="videoGrid"></div>
+        </main>
+
+        <!-- СТРАНИЦА ПРОСМОТРА ВИДЕО -->
+        <section id="watch-page" class="page hidden">
+            <button class="btn-back" onclick="showSection('main-page')">
+                <span class="material-symbols-outlined">arrow_back</span> Назад к списку
+            </button>
+            <div class="watch-container">
+                <div class="video-player-wrapper" id="videoPlayerWrapper"></div>
+                <h1 id="watchTitle">Название видео</h1>
+                
+                <div class="video-author-info">
+                    <div class="author-avatar">K</div>
+                    <div class="author-details" id="watchAuthor">Автор</div>
+                </div>
+                
+                <div class="video-description">
+                    <h3>Описание</h3>
+                    <p id="watchDesc">Текст описания...</p>
+                </div>
+
+                <!-- Блок комментариев -->
+                <div class="comments-section">
+                    <h3>Комментарии (<span id="commentsCount">0</span>)</h3>
+                    <form id="commentForm" class="hidden">
+                        <input type="text" id="commentInput" placeholder="Оставьте комментарий..." required>
+                        <button type="submit" class="btn-send"><span class="material-symbols-outlined">send</span></button>
+                    </form>
+                    <p id="commentAuthWarning" class="warning-box">🔒 Войдите в аккаунт через Google, чтобы оставлять комментарии.</p>
+                    <div id="commentsList"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- СТРАНИЦА ПУБЛИКАЦИИ ВИДЕО (ДЛЯ АДМИНА) -->
+        <section id="admin-page" class="page hidden">
+            <div class="card admin-card">
+                <h2>Панель владельца: Публикация видео</h2>
+                <form id="addVideoForm">
+                    <div class="input-group">
+                        <label>Название видео:</label>
+                        <input type="text" id="videoTitleInput" required placeholder="Например: Обзор чита Blox Fruits">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label>ID видео с YouTube (код после v=) или прямая ссылка mp4:</label>
+                        <input type="text" id="videoUrlInput" required placeholder="dQw4w9WgXcQ">
+                    </div>
+
+                    <div class="input-group">
+                        <label>Описание видео:</label>
+                        <textarea id="videoDescInput" rows="5" required placeholder="Расскажите подробнее о скрипте..."></textarea>
+                    </div>
+                    
+                    <div class="form-buttons">
+                        <button type="submit" class="btn btn-primary">Опубликовать</button>
+                        <button type="button" class="btn btn-secondary" onclick="showSection('main-page')">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- МОДАЛЬНОЕ ОКНО Google Авторизации -->
+        <div id="authModal" class="modal hidden">
+            <div class="modal-content auth-card">
+                <div class="modal-header">
+                    <h2>Вход в аккаунт</h2>
+                    <button class="close-modal-btn" onclick="closeAuthModal()">&times;</button>
+                </div>
+                <p class="modal-subtitle">Добро пожаловать в Kaisu script. Выберите способ входа:</p>
+                
+                <button type="button" class="google-login-btn" onclick="simulateGoogleLogin(false)">
+                    <img src="https://gstatic.com" alt="Google">
+                    Войти через Google
+                </button>
+
+                <div class="divider"><span>или войти как создатель</span></div>
+
+                <button type="button" class="google-login-btn admin-login-btn" onclick="simulateGoogleLogin(true)">
+                    <span class="material-symbols-outlined">admin_panel_settings</span> Войти как Владелец (Admin)
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
